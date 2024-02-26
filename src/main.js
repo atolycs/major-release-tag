@@ -114,6 +114,7 @@ async function createupdateTags(core, octokit, context, tag_info, commit_info){
     core.info(`==> Override Tag`)
     await octokit.rest.git.updateRef({
       ...context.repo,
+      ref: `refs/tags/${tag_info.major.tag}`,
       sha: update_tags.data.sha,
       force: true
     })
