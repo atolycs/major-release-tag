@@ -47,7 +47,7 @@ export async function run(core, octokit, context, alias, commit_infomaiton) {
     },
     major: {
       tag: major_version_tag,
-      sha: major_info.data.sha
+      sha: major_info.data.object.sha
     }
   }
 
@@ -100,7 +100,7 @@ async function createupdateTags(core, octokit, context, tag_info, commit_info){
     }
   })
 
-  if (typeof tag_info.major.sha  === "undefined"){ // eslint-disable-line
+  if (typeof tag_info.major.sha === 'undefined'){ // eslint-disable-line
     core.info(`==> Adding Tag`)
     await octokit.rest.git.createRef({
       ...context.repo,
