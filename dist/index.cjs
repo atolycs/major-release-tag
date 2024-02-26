@@ -22907,16 +22907,6 @@ var tag_info_default = tag_infomation = {
 };
 
 // src/main.js
-var getRef_response = {
-  ref: string,
-  node_id: string,
-  url: string,
-  object: {
-    type: string,
-    sha: string,
-    url: string
-  }
-};
 async function run(core2, octokit2, context2, alias, commit_infomaiton) {
   const major_version_tag = alias.split(".")[0];
   core2.info(`==> Getting ${alias} infomation...`);
