@@ -1,17 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 
-const getRef_response = {
-  ref: string,
-  node_id: string,
-  url: string,
-  object: {
-    type: string,
-    sha: string,
-    url: string,
-  }
-}
-
 import tag_infomation from "../types/tag_info"
 import commit_infomaiton from "../types/commit_infomation"
 
