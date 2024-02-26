@@ -22953,6 +22953,7 @@ async function createupdateTags(core2, octokit2, context2, tag_info, commit_info
     ...context2.repo,
     tag: tag_info.alias.tag,
     object: tag_info.alias.sha,
+    message: `Routing ${tag_info.major.tag} to ${tag_info.alias.tag}`,
     type: "commit",
     tagger: {
       name: commit_info2.commit_name,
