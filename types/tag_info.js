@@ -5,6 +5,7 @@
  * @property {String} sha SHA番号
  * @property {Object} major バージョン情報リンク先
  * @property {String} tag タグ名
+ * @property {String} sha SHA番号
  */
 
 /* eslint-disable no-undef */
@@ -14,7 +15,8 @@ export default tag_infomation = {
     sha: ""
   },
   major: {
-    tag: ""
+    tag: "",
+    sha: ""
   }
 }
 

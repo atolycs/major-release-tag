@@ -31,8 +31,12 @@ export async function run(core, octokit, context, alias, commit_infomaiton) {
   try {
     major_info = await availableTags(octokit, context, major_version_tag)
     core.info(`==> tag ${major_version_tag} already exists.`)
+    core.info(`==> Link from: ${alias}`)
+    core.info(`==> Major Tag: ${major_version_tag}`)
+    core.info(`==> Overwriting Tag`)
   } catch (error) {
     core.info(`==> tag ${major_version_tag} not exist yet.`)
+    core.info(`==> Creating Major tag ${major_version_tag}...`)
   }
   
   /** @type {tag_infomation}  */
@@ -45,14 +49,6 @@ export async function run(core, octokit, context, alias, commit_infomaiton) {
       tag: major_version_tag,
       sha: major_info.data.sha
     }
-  }
-
-  if (typeof major_info === "undefined" ) {
-    core.info(`==> Link from: ${alias}`)
-    core.info(`==> Major Tag: ${major_version_tag}`)
-    core.info(`==> Overwriting Tag`)
-  } else {
-    core.info(`==> Creating Major tag ${major_version_tag}...`)
   }
 
   await createupdateTags(
