@@ -22889,41 +22889,106 @@ var require_github = __commonJS({
 var import_core = __toESM(require_core(), 1);
 var import_github = __toESM(require_github(), 1);
 
-// src/main.js
-async function run(core2, octokit2, context2, alias) {
-  core2.info(`==> Get Alias from Tag Number: ${alias}`);
-  const major = alias.split(".")[0];
-  core2.info(`==> Major version: ${major}`);
-  let major_ref, alias_ref;
-  core2.info(`==> Correcting ${alias} Reference...`);
-  alias_ref = (await octokit2.rest.git.getRef({
-    ...context2.repo,
-    ref: `tags/${alias}`
-  })).data;
-  const alias_sha = alias_ref.object.sha;
-  core2.info(`==> Searching ${major} Reference...`);
-  try {
-    major_ref = (await octokit2.rest.git.getRef({
-      ...context2.repo,
-      ref: `tags/${major}`
-    })).data;
-  } catch (error) {
-    if (error.status === 404) {
-      core2.info(`==> Major tag not found.`);
-    } else {
-      throw error;
-    }
+// types/commit_infomation.js
+var commit_infomation_default = commit_infomation = {
+  commit_name: "",
+  commit_email: ""
+};
+
+// types/tag_info.js
+var tag_info_default = tag_infomation = {
+  alias: {
+    tag: "",
+    sha: ""
+  },
+  major: {
+    tag: ""
   }
-  core2.info(`==> Link from: ${alias}(${alias_sha})`);
-  core2.info(`==> Major: ${major}(${major_ref.object.sha})`);
+};
+
+// src/main.js
+var getRef_response = {
+  ref: string,
+  node_id: string,
+  url: string,
+  object: {
+    type: string,
+    sha: string,
+    url: string
+  }
+};
+async function run(core2, octokit2, context2, alias, commit_infomaiton) {
+  const major_version_tag = alias.split(".")[0];
+  core2.info(`==> Getting ${alias} infomation...`);
+  const alias_info = await availableTags(octokit2, context2, alias);
+  core2.info(`==> Detecting ${major_version_tag}`);
+  const major_info = await availableTags(octokit2, context2, major_version_tag);
+  const version_tags = {
+    alias: {
+      tag: alias,
+      sha: alias_info.data.object.sha
+    },
+    major: {
+      tag: major_version_tag
+    }
+  };
+  if (major_info) {
+    core2.info(`==> Link from: ${alias}`);
+    core2.info(`==> Major Tag: ${major_version_tag}`);
+    core2.info(`==> Overwriting Tag`);
+  } else {
+    core2.info(`==> Creating Major tag ${major_version_tag}...`);
+  }
+  await createupdateTags(
+    core2,
+    octokit2,
+    context2,
+    version_tags,
+    commit_infomaiton
+  );
+}
+async function availableTags(octokit2, context2, tags) {
+  return await octokit2.rest.git.getRef({
+    ...context2.repo,
+    ref: `tags/${tags}`
+  });
+}
+async function createupdateTags(core2, octokit2, context2, tag_info, commit_info2) {
+  const update_tags = await octokit2.rest.git.createTag({
+    ...context2.repo,
+    tag: tag_info.alias.tag,
+    object: tag_info.alias.sha,
+    type: "commit",
+    tagger: {
+      name: commit_info2.commit_name,
+      email: commit_info2.commit_email
+    }
+  });
+  if (typeof tag_info.major.tag) {
+    await octokit2.rest.git.createRef({
+      ...context2.repo,
+      sha: update_tags.sha,
+      ref: `refs/tags/${tag_info.major.tag}`
+    });
+  } else {
+    await octokit2.rest.git.updateRef({
+      ...context2.repo,
+      sha: update_tags.sha,
+      force: true
+    });
+  }
 }
 
 // index.js
 var context = import_github.default.context;
 var octokit = import_github.default.getOctokit(import_core.default.getInput("token"));
 var alias_version = import_core.default.getInput("alias_version");
+var commit_info = {
+  commit_name: import_core.default.getInput("commit-name"),
+  commit_email: import_core.default.getInput("commit-email")
+};
 try {
-  run(import_core.default, octokit, context, alias_version);
+  run(import_core.default, octokit, context, alias_version, commit_info);
 } catch (error) {
   import_core.default.setFailed(error.message);
 }
