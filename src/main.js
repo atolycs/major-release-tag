@@ -45,7 +45,7 @@ export async function run(core, octokit, context, alias, commit_infomaiton) {
     }
   }
 
-  if (typeof major_info) {
+  if (typeof major_info === "undefined" ) {
     core.info(`==> Link from: ${alias}`)
     core.info(`==> Major Tag: ${major_version_tag}`)
     core.info(`==> Overwriting Tag`)
@@ -101,17 +101,19 @@ async function createupdateTags(core, octokit, context, tag_info, commit_info){
     }
   })
 
-  if (typeof tag_info.major.tag){ // eslint-disable-line
+  if (typeof tag_info.major.tag  === "undefined"){ // eslint-disable-line
     await octokit.rest.git.createRef({
       ...context.repo,
       sha: update_tags.data.sha,
       ref: `refs/tags/${tag_info.major.tag}`
     })
+
   } else {
     await octokit.rest.git.updateRef({
       ...context.repo,
       sha: update_tags.data.sha,
       force: true
     })
+
   }
 }

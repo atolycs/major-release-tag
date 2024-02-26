@@ -22927,7 +22927,7 @@ async function run(core2, octokit2, context2, alias, commit_infomaiton) {
       tag: major_version_tag
     }
   };
-  if (typeof major_info) {
+  if (typeof major_info === "undefined") {
     core2.info(`==> Link from: ${alias}`);
     core2.info(`==> Major Tag: ${major_version_tag}`);
     core2.info(`==> Overwriting Tag`);
@@ -22960,7 +22960,7 @@ async function createupdateTags(core2, octokit2, context2, tag_info, commit_info
       email: commit_info2.commit_email
     }
   });
-  if (typeof tag_info.major.tag) {
+  if (typeof tag_info.major.tag === "undefined") {
     await octokit2.rest.git.createRef({
       ...context2.repo,
       sha: update_tags.data.sha,
