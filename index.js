@@ -20,7 +20,7 @@ const alias_version = core.getInput("alias_version")
 */
 
 const commit_info = {
-  commit_name: core.getInput("commit-name"),
+  commit_name: core.getInput("commit-user"),
   commit_email: core.getInput("commit-email")
 }
 

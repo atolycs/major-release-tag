@@ -22980,7 +22980,7 @@ var context = import_github.default.context;
 var octokit = import_github.default.getOctokit(import_core.default.getInput("token"));
 var alias_version = import_core.default.getInput("alias_version");
 var commit_info = {
-  commit_name: import_core.default.getInput("commit-name"),
+  commit_name: import_core.default.getInput("commit-user"),
   commit_email: import_core.default.getInput("commit-email")
 };
 try {
