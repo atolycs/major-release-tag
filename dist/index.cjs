@@ -22923,6 +22923,13 @@ async function run(core2, octokit2, context2, alias, commit_infomaiton) {
   } catch (error) {
     core2.info(`==> tag ${major_version_tag} not exist yet.`);
     core2.info(`==> Creating Major tag ${major_version_tag}...`);
+    major_info = {
+      data: {
+        object: {
+          sha: void 0
+        }
+      }
+    };
   }
   const version_tags = {
     alias: {
@@ -22931,7 +22938,7 @@ async function run(core2, octokit2, context2, alias, commit_infomaiton) {
     },
     major: {
       tag: major_version_tag,
-      sha: major_info.data.object.sha || void 0
+      sha: major_info.data.object.sha
     }
   };
   await createupdateTags(

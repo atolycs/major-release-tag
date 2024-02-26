@@ -37,6 +37,13 @@ export async function run(core, octokit, context, alias, commit_infomaiton) {
   } catch (error) {
     core.info(`==> tag ${major_version_tag} not exist yet.`)
     core.info(`==> Creating Major tag ${major_version_tag}...`)
+    major_info = {
+      data: {
+        object: {
+          sha: undefined
+        }
+      }
+    }
   }
   
   /** @type {tag_infomation}  */
@@ -47,7 +54,7 @@ export async function run(core, octokit, context, alias, commit_infomaiton) {
     },
     major: {
       tag: major_version_tag,
-      sha: major_info.data.object.sha || undefined
+      sha: major_info.data.object.sha
     }
   }
 
