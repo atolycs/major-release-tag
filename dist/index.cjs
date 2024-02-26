@@ -22911,9 +22911,10 @@ async function run(core2, octokit2, context2, alias, commit_infomaiton) {
   const major_version_tag = alias.split(".")[0];
   core2.info(`==> Getting ${alias} infomation...`);
   const alias_info = await availableTags(octokit2, context2, alias);
+  let major_info;
   core2.info(`==> Detecting ${major_version_tag}`);
   try {
-    const major_info2 = await availableTags(octokit2, context2, major_version_tag);
+    major_info = await availableTags(octokit2, context2, major_version_tag);
     core2.info(`==> tag ${major_version_tag} already exists.`);
   } catch (error) {
     core2.info(`==> tag ${major_version_tag} not exist yet.`);
@@ -22924,7 +22925,8 @@ async function run(core2, octokit2, context2, alias, commit_infomaiton) {
       sha: alias_info.data.object.sha
     },
     major: {
-      tag: major_version_tag
+      tag: major_version_tag,
+      sha: major_info.data.sha
     }
   };
   if (typeof major_info === "undefined") {
@@ -22961,7 +22963,7 @@ async function createupdateTags(core2, octokit2, context2, tag_info, commit_info
       email: commit_info2.commit_email
     }
   });
-  if (typeof tag_info.major.tag === "undefined") {
+  if (typeof tag_info.major.sha === "undefined") {
     core2.info(`==> Adding Tag`);
     await octokit2.rest.git.createRef({
       ...context2.repo,

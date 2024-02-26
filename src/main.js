@@ -26,9 +26,10 @@ export async function run(core, octokit, context, alias, commit_infomaiton) {
   const alias_info = await availableTags(octokit, context, alias)
 
   // Get Major version Tag data
+  let major_info
   core.info(`==> Detecting ${major_version_tag}`)
   try {
-    const major_info = await availableTags(octokit, context, major_version_tag)
+    major_info = await availableTags(octokit, context, major_version_tag)
     core.info(`==> tag ${major_version_tag} already exists.`)
   } catch (error) {
     core.info(`==> tag ${major_version_tag} not exist yet.`)
@@ -41,7 +42,8 @@ export async function run(core, octokit, context, alias, commit_infomaiton) {
       sha: alias_info.data.object.sha 
     },
     major: {
-      tag: major_version_tag
+      tag: major_version_tag,
+      sha: major_info.data.sha
     }
   }
 
@@ -102,7 +104,7 @@ async function createupdateTags(core, octokit, context, tag_info, commit_info){
     }
   })
 
-  if (typeof tag_info.major.tag  === "undefined"){ // eslint-disable-line
+  if (typeof tag_info.major.sha  === "undefined"){ // eslint-disable-line
     core.info(`==> Adding Tag`)
     await octokit.rest.git.createRef({
       ...context.repo,
