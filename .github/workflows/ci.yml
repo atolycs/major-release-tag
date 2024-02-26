@@ -1,0 +1,29 @@
+name: "testing Tag Release"
+on:
+    workflow_dispatch:
+        inputs:
+            alias_tags:
+                description: "Link Major Tag"
+
+jobs:
+    tagging:
+        name: Tagging Test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            
+            - name: Generate Token
+              id: generate-token
+              uses: atolycs/create-app-auth@main
+              with:
+                app-id: ${{ secrets.APP_ID }}
+                private-key: ${{ secrets.APP_PEM }}
+            
+            - name: Tag Update Check
+              uses: ./
+              with:
+                token: ${{ steps.generate-token.outputs.token }}
+                commit-user: ${{ steps.generate-token.outputs.commit-user }}
+                commit-email: ${{ steps.generate-token.outputs.commit-email }}
+                alias_version: ${{ github.event.inputs.alias_tags }}
