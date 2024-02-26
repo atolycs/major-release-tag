@@ -22927,7 +22927,7 @@ async function run(core2, octokit2, context2, alias, commit_infomaiton) {
       tag: major_version_tag
     }
   };
-  if (major_info) {
+  if (typeof major_info) {
     core2.info(`==> Link from: ${alias}`);
     core2.info(`==> Major Tag: ${major_version_tag}`);
     core2.info(`==> Overwriting Tag`);

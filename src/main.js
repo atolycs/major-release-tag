@@ -45,7 +45,7 @@ export async function run(core, octokit, context, alias, commit_infomaiton) {
     }
   }
 
-  if (major_info) {
+  if (typeof major_info) {
     core.info(`==> Link from: ${alias}`)
     core.info(`==> Major Tag: ${major_version_tag}`)
     core.info(`==> Overwriting Tag`)
