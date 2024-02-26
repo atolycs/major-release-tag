@@ -91,7 +91,7 @@ async function availableTags(octokit, context, tags) {
 async function createupdateTags(core, octokit, context, tag_info, commit_info){
   const update_tags = await octokit.rest.git.createTag({
     ...context.repo,
-    tag: tag_info.alias.tag,
+    tag: tag_info.major.tag,
     object: tag_info.alias.sha,
     message: `Routing ${tag_info.major.tag} to ${tag_info.alias.tag}`,
     type: 'commit',
