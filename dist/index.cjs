@@ -22912,7 +22912,12 @@ async function run(core2, octokit2, context2, alias, commit_infomaiton) {
   core2.info(`==> Getting ${alias} infomation...`);
   const alias_info = await availableTags(octokit2, context2, alias);
   core2.info(`==> Detecting ${major_version_tag}`);
-  const major_info = await availableTags(octokit2, context2, major_version_tag);
+  try {
+    const major_info2 = await availableTags(octokit2, context2, major_version_tag);
+    core2.info(`==> tag ${major_version_tag} already exists.`);
+  } catch (error) {
+    core2.info(`==> tag ${major_version_tag} not exist yet.`);
+  }
   const version_tags = {
     alias: {
       tag: alias,
@@ -22938,7 +22943,7 @@ async function run(core2, octokit2, context2, alias, commit_infomaiton) {
   );
 }
 async function availableTags(octokit2, context2, tags) {
-  return await octokit2.rest.git.getRef({
+  return octokit2.rest.git.getRef({
     ...context2.repo,
     ref: `tags/${tags}`
   });

@@ -27,9 +27,13 @@ export async function run(core, octokit, context, alias, commit_infomaiton) {
 
   // Get Major version Tag data
   core.info(`==> Detecting ${major_version_tag}`)
-  const major_info = await availableTags(octokit, context, major_version_tag)
-
-
+  try {
+    const major_info = await availableTags(octokit, context, major_version_tag)
+    core.info(`==> tag ${major_version_tag} already exists.`)
+  } catch (error) {
+    core.info(`==> tag ${major_version_tag} not exist yet.`)
+  }
+  
   /** @type {tag_infomation}  */
   const version_tags = {
     alias: {
@@ -69,7 +73,7 @@ export async function run(core, octokit, context, alias, commit_infomaiton) {
 
 
 async function availableTags(octokit, context, tags) {
-  return await octokit.rest.git.getRef({
+  return octokit.rest.git.getRef({
     ...context.repo,
     ref: `tags/${tags}`
   })
