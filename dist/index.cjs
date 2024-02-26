@@ -22931,7 +22931,7 @@ async function run(core2, octokit2, context2, alias, commit_infomaiton) {
     },
     major: {
       tag: major_version_tag,
-      sha: major_info.data.object.sha
+      sha: major_info.data.object.sha || void 0
     }
   };
   await createupdateTags(
