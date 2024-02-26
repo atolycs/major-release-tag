@@ -12,10 +12,12 @@ inputs:
     description: "Github App Token"
     required: false
     default: ${{ github.token }}
+
   commit-user:
     description: "Automate Commit User Account Name"
     required: false
     default: ${{ github.actor }}
+
   commit-email:
     description: "Automate Commit User Email"
     required: false

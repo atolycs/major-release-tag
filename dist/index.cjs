@@ -22963,13 +22963,13 @@ async function createupdateTags(core2, octokit2, context2, tag_info, commit_info
   if (typeof tag_info.major.tag) {
     await octokit2.rest.git.createRef({
       ...context2.repo,
-      sha: update_tags.sha,
+      sha: update_tags.data.sha,
       ref: `refs/tags/${tag_info.major.tag}`
     });
   } else {
     await octokit2.rest.git.updateRef({
       ...context2.repo,
-      sha: update_tags.sha,
+      sha: update_tags.data.sha,
       force: true
     });
   }

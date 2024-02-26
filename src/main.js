@@ -104,13 +104,13 @@ async function createupdateTags(core, octokit, context, tag_info, commit_info){
   if (typeof tag_info.major.tag){ // eslint-disable-line
     await octokit.rest.git.createRef({
       ...context.repo,
-      sha: update_tags.sha,
+      sha: update_tags.data.sha,
       ref: `refs/tags/${tag_info.major.tag}`
     })
   } else {
     await octokit.rest.git.updateRef({
       ...context.repo,
-      sha: update_tags.sha,
+      sha: update_tags.data.sha,
       force: true
     })
   }
