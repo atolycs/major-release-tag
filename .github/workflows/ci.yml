@@ -27,3 +27,9 @@ jobs:
                 commit-user: ${{ steps.generate-token.outputs.commit-user }}
                 commit-email: ${{ steps.generate-token.outputs.commit-email }}
                 alias_version: ${{ github.event.inputs.alias_tags }}
+            
+            - name: Post Routing Test!
+              env:
+                GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+              run: |
+                gh api /octocat
