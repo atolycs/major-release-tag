@@ -6,8 +6,8 @@
   "description": "Github Action Template for Node.js",
   "main": "index.js",
   "scripts": {
-    "build:main": "esbuild --bundle --outdir=dist --out-extension:.js=.cjs ./index.js",
-    "build:post": "esbuild --bundle --outdir=dist --out-extension:.js=.cjs ./post.js",
+    "build:main": "esbuild --platform=node --bundle --outdir=dist --out-extension:.js=.cjs ./index.js",
+    "build:post": "esbuild --platform=node --bundle --outdir=dist --out-extension:.js=.cjs ./post.js",
     "lint": "eslint .",
     "fix": "eslint . --fix"
   },
@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@octokit/rest": "^20.0.2",
     "esbuild": "^0.20.0",
     "eslint": "^8.56.0",
     "eslint-plugin-jest": "^27.9.0",

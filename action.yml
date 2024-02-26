@@ -8,10 +8,23 @@ branding:
   color: red
 
 inputs:
-  hogefuga:
-    description: "hogefuga"
-    required: true
-
+  token:
+    description: "Github App Token"
+    required: false
+    default: ${{ github.token }}
+  commit-user:
+    description: "Automate Commit User Account Name"
+    required: false
+    default: ${{ github.actor }}
+  commit-email:
+    description: "Automate Commit User Email"
+    required: false
+    default: "41898282+github-actions[bot]@users.noreply.github.com"
+  
+  alias_version:
+    description: "Major version link to Tag"
+    reqruied: true
+  
 runs:
   using: "node20"
   main: "dist/index.js"
