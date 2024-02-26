@@ -89,6 +89,7 @@ async function availableTags(octokit, context, tags) {
  */
 
 async function createupdateTags(core, octokit, context, tag_info, commit_info){
+  core.info(`==> Generating Tag...`)
   const update_tags = await octokit.rest.git.createTag({
     ...context.repo,
     tag: tag_info.major.tag,
@@ -102,6 +103,7 @@ async function createupdateTags(core, octokit, context, tag_info, commit_info){
   })
 
   if (typeof tag_info.major.tag  === "undefined"){ // eslint-disable-line
+    core.info(`==> Adding Tag`)
     await octokit.rest.git.createRef({
       ...context.repo,
       sha: update_tags.data.sha,
@@ -109,6 +111,7 @@ async function createupdateTags(core, octokit, context, tag_info, commit_info){
     })
 
   } else {
+    core.info(`==> Override Tag`)
     await octokit.rest.git.updateRef({
       ...context.repo,
       sha: update_tags.data.sha,

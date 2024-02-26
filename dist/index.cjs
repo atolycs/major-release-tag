@@ -22949,6 +22949,7 @@ async function availableTags(octokit2, context2, tags) {
   });
 }
 async function createupdateTags(core2, octokit2, context2, tag_info, commit_info2) {
+  core2.info(`==> Generating Tag...`);
   const update_tags = await octokit2.rest.git.createTag({
     ...context2.repo,
     tag: tag_info.major.tag,
@@ -22961,12 +22962,14 @@ async function createupdateTags(core2, octokit2, context2, tag_info, commit_info
     }
   });
   if (typeof tag_info.major.tag === "undefined") {
+    core2.info(`==> Adding Tag`);
     await octokit2.rest.git.createRef({
       ...context2.repo,
       sha: update_tags.data.sha,
       ref: `refs/tags/${tag_info.major.tag}`
     });
   } else {
+    core2.info(`==> Override Tag`);
     await octokit2.rest.git.updateRef({
       ...context2.repo,
       sha: update_tags.data.sha,
